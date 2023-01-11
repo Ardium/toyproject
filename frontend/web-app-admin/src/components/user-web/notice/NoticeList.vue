@@ -2,7 +2,7 @@
 <template>
   <div class="ma-md-5">
     <div class="d-flex justify-end mt-5">
-      <!-- For Notice List Manipulation > Register  -->
+      <!-- For Notice List Manipulation > View Detail  -->
       <v-btn
         text
         outlined
@@ -72,8 +72,6 @@
       :items-per-page="10"
     >
     </v-data-table>
-
-    <!-- {{ selectedRow }} -->
   </div>
 </template>
 
@@ -176,7 +174,6 @@ export default {
     deleteNotice: function () {
       this.dialogDelete = false;
 
-      // TODO: 테이블에서 데이터 삭제 후 테이블 REFRESH되는지 확인 필요, 안되면 REFRESH하거나 선택된 상태 없애야함
       this.changeMode(MODE_DELETE);
     },
   },

@@ -9,7 +9,11 @@
         <NoticeList v-on:changeMode="changeMode"></NoticeList>
       </v-col>
       <v-col cols="4">
-        <NoticeDetail :mode="mode" :notice="notice"></NoticeDetail>
+        <NoticeDetail
+          :mode="mode"
+          :notice="notice"
+          v-on:finishProcess="finishProcess"
+        ></NoticeDetail>
       </v-col>
     </v-row>
   </v-container>
@@ -41,6 +45,9 @@ export default {
       } else {
         // TODO: DELETE SQL 연결
       }
+    },
+    finishProcess: function () {
+      this.mode = MODE_INIT;
     },
   },
   components: {

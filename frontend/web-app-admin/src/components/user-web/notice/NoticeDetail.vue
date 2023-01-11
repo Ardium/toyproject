@@ -13,7 +13,6 @@
     </div>
 
     <div class="mt-5">
-      <!-- mode: {{ mode }} object: {{ notice }} -->
       <v-combobox
         outlined
         dense
@@ -110,6 +109,8 @@ export default {
     clickOkBtn: function () {
       console.log("clickOkBtn");
       this.initializeElements();
+
+      this.$emit("finishProcess");
     },
     clickCancelBtn: function () {
       console.log("clickCancelBtn");
