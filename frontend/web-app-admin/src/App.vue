@@ -21,7 +21,7 @@
           <!-- TODO: key 중복 문제 해결 필요 -->
           <v-list-item
             v-for="(item, i) in navBasicItems"
-            :key="i"
+            :key="'common' + i"
             :to="item.to"
           >
             <v-list-item-icon>
@@ -37,7 +37,7 @@
           <v-subheader>User Web</v-subheader>
           <v-list-item
             v-for="(item, i) in navUserWebItems"
-            :key="i"
+            :key="'user-web' + i"
             :to="item.to"
           >
             <v-list-item-icon>
@@ -53,7 +53,7 @@
           <v-subheader>Admin Web</v-subheader>
           <v-list-item
             v-for="(item, i) in navAdminWebItems"
-            :key="i"
+            :key="'admin-web' + i"
             :to="item.to"
           >
             <v-list-item-icon>
