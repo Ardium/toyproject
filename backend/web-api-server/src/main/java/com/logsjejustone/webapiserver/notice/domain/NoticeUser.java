@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Entity
 public class NoticeUser {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer Id;
 
     @Column(length = 6)
