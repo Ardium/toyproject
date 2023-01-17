@@ -140,9 +140,6 @@ export default {
               title: this.title,
               content: this.content,
             })
-            .then((response) => {
-              console.log(JSON.stringify(response.data));
-            })
             .catch(function (error) {
               console.log("[ERR/MOD]" + error);
               responseStatus = error.response.status;
@@ -153,9 +150,6 @@ export default {
             .delete("/api/notices/" + this.id, {
               id: this.id,
             })
-            .then((response) => {
-              console.log(JSON.stringify(response.data));
-            })
             .catch(function (error) {
               console.log("[ERR/DEL]" + error);
               responseStatus = error.response.status;
@@ -165,7 +159,6 @@ export default {
           // do nothing
           break;
       }
-      console.log("responseStatus: " + responseStatus);
       return responseStatus;
     },
     clickOkBtn: function () {
