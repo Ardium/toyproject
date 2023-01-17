@@ -64,6 +64,8 @@
 const MODE_INIT = "INIT";
 const MODE_VIEW = "VIEW";
 const MODE_DELETE = "DELETE";
+const MODE_MODIFY = "MODIFY";
+const MODE_REGISTER = "REGISTER";
 
 export default {
   props: ["mode", "notice"],
@@ -82,6 +84,10 @@ export default {
       if (this.id != this.notice.id) {
         this.id = this.notice.id;
         this.refreshElements();
+
+        if (this.mode == MODE_DELETE) {
+          this.clickOkBtn();
+        }
       }
     });
   },
@@ -106,14 +112,69 @@ export default {
       this.title = this.notice.title;
       this.content = this.notice.content;
     },
+    doAxiosProcess: function () {
+      let responseStatus = 200;
+      switch (this.mode) {
+        case MODE_REGISTER:
+          this.$axios
+            .post("/api/notices", {
+              // TODO: EmployeeNo는 로그인한 유저의 사번으로 변경
+              registerEmployeeNo: "000000",
+              updateEmployeeNo: "000000",
+              category: this.category,
+              title: this.title,
+              content: this.content,
+            })
+            .catch(function (error) {
+              responseStatus = error.response.status;
+              console.log("[ERR/REG]" + error);
+            });
+          break;
+        case MODE_MODIFY:
+          this.$axios
+            .put("/api/notices/" + this.id, {
+              id: this.id,
+              // TODO: EmployeeNo는 로그인한 유저의 사번으로 변경
+              updateEmployeeNo: "000000",
+              category: this.category,
+              title: this.title,
+              content: this.content,
+            })
+            .then((response) => {
+              console.log(JSON.stringify(response.data));
+            })
+            .catch(function (error) {
+              console.log("[ERR/MOD]" + error);
+              responseStatus = error.response.status;
+            });
+          break;
+        case MODE_DELETE:
+          this.$axios
+            .delete("/api/notices/" + this.id, {
+              id: this.id,
+            })
+            .then((response) => {
+              console.log(JSON.stringify(response.data));
+            })
+            .catch(function (error) {
+              console.log("[ERR/DEL]" + error);
+              responseStatus = error.response.status;
+            });
+          break;
+        default:
+          // do nothing
+          break;
+      }
+      console.log("responseStatus: " + responseStatus);
+      return responseStatus;
+    },
     clickOkBtn: function () {
-      console.log("clickOkBtn");
-      this.initializeElements();
-
-      this.$emit("finishProcess");
+      if (this.doAxiosProcess() == 200) {
+        this.initializeElements();
+        this.$emit("finishProcess");
+      }
     },
     clickCancelBtn: function () {
-      console.log("clickCancelBtn");
       this.initializeElements();
     },
   },

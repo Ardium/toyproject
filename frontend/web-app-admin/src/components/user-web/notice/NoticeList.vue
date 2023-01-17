@@ -106,53 +106,27 @@ export default {
           value: "name",
         },
       ],
-      data: [
-        {
-          id: "1",
-          category: "Competition",
-          title: "The 3rd Competition Open!",
-          date: "2022/11/01",
-          name: "SYSTEM",
-        },
-        {
-          id: "2",
-          category: "System Check",
-          title: "2022/12/10 System Check",
-          date: "2022/12/01",
-          name: "SYSTEM",
-        },
-        {
-          id: "3",
-          category: "System Check",
-          title: "2022/12/15 System Check",
-          date: "2022/12/10",
-          name: "SYSTEM",
-        },
-        {
-          id: "4",
-          category: "System Check",
-          title: "2023/01/01 System Check",
-          date: "2022/12/21",
-          name: "SYSTEM",
-        },
-        {
-          id: "5",
-          category: "Competiton",
-          title: "The 4th Competition Open!",
-          date: "2023/01/01",
-          name: "SYSTEM",
-        },
-        {
-          id: "6",
-          category: "Etc",
-          title: "Test Announcement",
-          date: "2023/01/05",
-          name: "SYSTEM",
-        },
-      ],
+      data: [],
     };
   },
+  created: function () {
+    this.getNotices();
+  },
   methods: {
+    getNotices: function () {
+      this.$axios
+        .get("/api/notices")
+        .then((response) => {
+          console.log("[RESPONSE] " + JSON.stringify(response.data));
+
+          // TODO: Date 포맷 변환해서 인식되도록 수정
+          // TODO: Name으로 '000000' 입력되면 SYSTEM으로 표시되도록 수정
+          this.data = response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
     hasSelectedRow: function () {
       return this.selectedRow.length > 0;
     },
@@ -174,7 +148,7 @@ export default {
     deleteNotice: function () {
       this.dialogDelete = false;
 
-      this.changeMode(MODE_DELETE);
+      this.changeMode(MODE_DELETE, this.selectedRow);
     },
   },
 };

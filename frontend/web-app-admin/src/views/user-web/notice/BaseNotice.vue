@@ -43,7 +43,7 @@ export default {
           this.notice = [];
         }
       } else {
-        // TODO: DELETE SQL 연결
+        this.notice.id = notice[0].id;
       }
     },
     finishProcess: function () {
