@@ -47,6 +47,8 @@ export default {
       }
     },
     finishProcess: function () {
+      window.location.reload();
+
       this.mode = MODE_INIT;
     },
   },
