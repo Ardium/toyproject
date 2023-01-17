@@ -117,11 +117,19 @@ export default {
       this.$axios
         .get("/api/notices")
         .then((response) => {
-          console.log("[RESPONSE] " + JSON.stringify(response.data));
+          this.data = [];
 
-          // TODO: Date 포맷 변환해서 인식되도록 수정
-          // TODO: Name으로 '000000' 입력되면 SYSTEM으로 표시되도록 수정
-          this.data = response.data;
+          for (let idx in response.data) {
+            let res = {
+              id: response.data[idx].id,
+              category: response.data[idx].category,
+              title: response.data[idx].title,
+              content: response.data[idx].content,
+              date: response.data[idx].updateDatetime.substr(0, 10), // FORMAT: yyyy-MM-dd
+              name: response.data[idx].updateEmployeeNo,
+            };
+            this.data.push(res);
+          }
         })
         .catch(function (error) {
           console.log(error);
