@@ -116,7 +116,7 @@ export default {
       {
         text: "User Management",
         icon: "mdi-account",
-        to: "/page/user-web/user",
+        to: "/page/user-web/users",
       },
       {
         text: "Menu Management",
@@ -128,7 +128,7 @@ export default {
       {
         text: "User Management",
         icon: "mdi-account-supervisor-circle",
-        to: "/page/admin-web/user",
+        to: "/page/admin-web/users",
       },
       {
         text: "Rights Management",
