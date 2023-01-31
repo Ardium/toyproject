@@ -6,29 +6,49 @@
 
     <div class="ma-md-5">
       <div class="d-flex justify-end mt-5">
-        <router-link
-          :to="{ name: 'AdminUsersUserInfo', params: { employeeNo: 100010 } }"
-          style="text-decoration: none"
-        >
-          <v-btn text outlined class="mx-md-1 elevation-2">REGISTER</v-btn>
-        </router-link>
+        <v-dialog persistent max-width="1000px" v-model="dialogRegister">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              text
+              outlined
+              class="mx-md-1 elevation-2"
+              v-bind="attrs"
+              v-on="on"
+              >REGISTER
+            </v-btn>
+          </template>
+          <v-card>
+            <Form v-on:finishProcess="finishProcess"></Form>
+          </v-card>
+        </v-dialog>
+
+        <v-dialog persistent max-width="1000px" v-model="dialogModify">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              text
+              outlined
+              class="mx-md-1 elevation-2"
+              v-bind="attrs"
+              v-on="on"
+              :disabled="!hasSelectedRow()"
+              >MODIFY
+            </v-btn>
+          </template>
+          <v-card>
+            <Form
+              :employee="this.selectedRow[0]"
+              v-on:finishProcess="finishProcess"
+            ></Form>
+          </v-card>
+        </v-dialog>
 
         <v-btn
           text
           outlined
           class="mx-md-1 elevation-2"
           :disabled="!hasSelectedRow()"
-          @click="clickModify"
-          >MODIFY</v-btn
-        >
-
-        <v-btn
-          text
-          outlined
-          class="mx-md-1 elevation-2"
-          :disabled="!hasSelectedRow()"
-          >DELETE</v-btn
-        >
+          >DELETE
+        </v-btn>
       </div>
 
       <v-card-title>
@@ -71,9 +91,16 @@
 </template>
 
 <script>
+import Form from "./../../../components/admin-web/users/AdminUsersDetail.vue";
+
 export default {
+  components: {
+    Form,
+  },
   data() {
     return {
+      dialogRegister: false,
+      dialogModify: false,
       selectedRow: [],
       search: "",
       headers: [
@@ -130,11 +157,9 @@ export default {
     hasSelectedRow: function () {
       return this.selectedRow.length > 0;
     },
-    clickModify: function () {
-      this.$router.push({
-        name: "AdminUsersUserInfo",
-        params: { employee: this.selectedRow[0] },
-      });
+    finishProcess: function () {
+      this.dialogRegister = false;
+      this.dialogModify = false;
     },
   },
 };

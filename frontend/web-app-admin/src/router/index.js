@@ -8,7 +8,6 @@ import NoticePage from "./../views/user-web/notice/BaseNotice.vue";
 
 // For Admin Web
 import AdminUsersPage from "./../views/admin-web/users/BaseAdminUsers.vue";
-import AdminUsersUserPage from "./../components/admin-web/users/AdminUsersDetail.vue";
 
 const routes = [
   // For User Web
@@ -23,12 +22,6 @@ const routes = [
     name: "BaseAdminUsers",
     path: "/page/admin-web/users",
     component: AdminUsersPage,
-  },
-  {
-    name: "AdminUsersUserInfo",
-    path: "/page/admin-web/users/user",
-    component: AdminUsersUserPage,
-    props: true,
   },
 ];
 

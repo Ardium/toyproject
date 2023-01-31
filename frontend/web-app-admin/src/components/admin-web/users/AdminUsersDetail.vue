@@ -11,6 +11,7 @@
         <v-col>
           <v-combobox
             outlined
+            dense
             hide-selected
             required
             clearable
@@ -25,6 +26,7 @@
           <v-text-field
             text
             outlined
+            dense
             clearable
             :rules="[rules.required, rules.employeeNo]"
             v-model="employeeNo"
@@ -38,6 +40,7 @@
           <v-text-field
             text
             outlined
+            dense
             clearable
             :rules="[rules.required]"
             v-model="nameKor"
@@ -49,6 +52,7 @@
           <v-text-field
             text
             outlined
+            dense
             clearable
             v-model="nameEng"
             label="영문이름"
@@ -62,6 +66,7 @@
           <v-text-field
             text
             outlined
+            dense
             clearable
             :rules="[rules.required, rules.phone]"
             v-model="phone"
@@ -73,6 +78,7 @@
           <v-text-field
             text
             outlined
+            dense
             clearable
             type="email"
             :rules="[rules.required, rules.email]"
@@ -85,6 +91,7 @@
       <v-text-field
         text
         outlined
+        dense
         clearable
         :rules="[rules.required, rules.password]"
         v-model="password"
@@ -96,6 +103,7 @@
           <v-text-field
             text
             outlined
+            dense
             clearable
             v-model="division"
             label="부서"
@@ -105,6 +113,7 @@
           <v-text-field
             text
             outlined
+            dense
             clearable
             v-model="team"
             label="팀"
@@ -117,6 +126,7 @@
           <v-text-field
             text
             outlined
+            dense
             clearable
             :rules="[rules.required]"
             v-model="position"
@@ -127,6 +137,7 @@
           <v-text-field
             text
             outlined
+            dense
             clearable
             type="date"
             :rules="[rules.required]"
@@ -139,15 +150,17 @@
     </div>
 
     <div class="d-flex justify-end">
-      <router-link
-        :to="{ name: 'BaseAdminUsers' }"
-        style="text-decoration: none"
-      >
-        <v-btn text outlined class="mx-md-1 elevation-2">Previous</v-btn>
-      </router-link>
-      <v-btn text outlined class="mx-md-1 elevation-2" @click="clickOk"
-        >OK</v-btn
-      >
+      <v-btn
+        text
+        outlined
+        dense
+        class="mx-md-1 elevation-2"
+        @click="clickCancel"
+        >Cancel
+      </v-btn>
+      <v-btn text outlined dense class="mx-md-1 elevation-2" @click="clickOk"
+        >OK
+      </v-btn>
     </div>
   </v-container>
 </template>
@@ -199,18 +212,30 @@ export default {
       usageExpiryDate: "9999-12-31",
     };
   },
-  created: function () {
-    this.company = this.employee.company;
-    this.employeeNo = this.employee.employeeNo;
-    this.nameKor = this.employee.nameKor;
-    this.nameEng = this.employee.nameEng;
-    this.phone = this.employee.phone;
-    this.email = this.employee.email;
-    this.division = this.employee.division;
-    this.team = this.employee.team;
-    this.position = this.employee.position;
+  mounted: function () {
+    this.$nextTick(function () {
+      this.setData();
+    });
+  },
+  watch: {
+    employee: {
+      handler() {
+        this.setData();
+      },
+    },
   },
   methods: {
+    setData: function () {
+      this.company = this.employee.company;
+      this.employeeNo = this.employee.employeeNo;
+      this.nameKor = this.employee.nameKor;
+      this.nameEng = this.employee.nameEng;
+      this.phone = this.employee.phone;
+      this.email = this.employee.email;
+      this.division = this.employee.division;
+      this.team = this.employee.team;
+      this.position = this.employee.position;
+    },
     changeCompany: function () {
       switch (this.company) {
         case "봄 회사": // 100000 ~ 199999
@@ -232,6 +257,11 @@ export default {
     },
     clickOk: function () {
       console.log("press ok button");
+      this.$emit("finishProcess");
+    },
+    clickCancel: function () {
+      console.log("press cancel button");
+      this.$emit("finishProcess");
     },
   },
 };
