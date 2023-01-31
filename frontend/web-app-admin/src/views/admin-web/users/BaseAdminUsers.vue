@@ -1,11 +1,5 @@
 <template>
-  <v-container>
-    <div class="text-h5 font-weight-medium ma-2">Users (Admin Web)</div>
-
-    <v-divider></v-divider>
-
-    <Main></Main>
-  </v-container>
+  <Main></Main>
 </template>
 
 <script>
