@@ -4,77 +4,92 @@
 
     <v-divider></v-divider>
 
-    <div class="ma-md-5">
-      <div class="d-flex justify-end mt-5">
-        <v-dialog persistent max-width="1000px" v-model="dialogRegister">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              text
-              outlined
-              class="mx-md-1 elevation-2"
-              v-bind="attrs"
-              v-on="on"
-              >REGISTER
-            </v-btn>
-          </template>
-          <v-card>
-            <Form v-on:finishProcess="finishProcess"></Form>
-          </v-card>
-        </v-dialog>
-
-        <v-dialog persistent max-width="1000px" v-model="dialogModify">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              text
-              outlined
-              class="mx-md-1 elevation-2"
-              v-bind="attrs"
-              v-on="on"
-              :disabled="!hasSelectedRow()"
-              >MODIFY
-            </v-btn>
-          </template>
-          <v-card>
-            <Form
-              :employee="this.selectedRow[0]"
-              v-on:finishProcess="finishProcess"
-            ></Form>
-          </v-card>
-        </v-dialog>
-
-        <v-dialog v-model="dialogDelete" persistent max-width="300">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              text
-              outlined
-              class="mx-md-1 elevation-2"
-              :disabled="!hasSelectedRow()"
-              v-bind="attrs"
-              v-on="on"
-              >DELETE
-            </v-btn>
-          </template>
-          <v-card>
-            <v-card-title class="text-h5">
-              Are you sure you want to delete the user?
-            </v-card-title>
-            <v-card-text
-              >Deleted notices cannot be restored, and are immediately reflected
-              on the user portal after deletion.</v-card-text
-            >
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="dialogDelete = false">
-                Cancel
+    <v-row>
+      <v-col class="align-self-center" :cols="4">
+        <div>
+          <v-switch
+            inset
+            color="indigo darken-3"
+            v-model="readAll"
+            :label="`${readAll ? 'All' : 'Available'}`"
+            @change="changeReadStatus"
+          ></v-switch>
+        </div>
+      </v-col>
+      <v-col class="align-self-center" :cols="8">
+        <div class="d-flex justify-end">
+          <v-dialog persistent max-width="1000px" v-model="dialogRegister">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                text
+                outlined
+                class="mx-md-1 elevation-2"
+                v-bind="attrs"
+                v-on="on"
+                >REGISTER
               </v-btn>
-              <v-btn color="blue darken-1" text @click="deleteUser">
-                Confirm
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </div>
+            </template>
+            <v-card>
+              <Form v-on:finishProcess="finishProcess"></Form>
+            </v-card>
+          </v-dialog>
 
+          <v-dialog persistent max-width="1000px" v-model="dialogModify">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                text
+                outlined
+                class="mx-md-1 elevation-2"
+                v-bind="attrs"
+                v-on="on"
+                :disabled="!hasSelectedRow()"
+                >MODIFY
+              </v-btn>
+            </template>
+            <v-card>
+              <Form
+                :employee="this.selectedRow[0]"
+                v-on:finishProcess="finishProcess"
+              ></Form>
+            </v-card>
+          </v-dialog>
+
+          <v-dialog v-model="dialogDelete" persistent max-width="300">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                text
+                outlined
+                class="mx-md-1 elevation-2"
+                :disabled="!hasSelectedRow()"
+                v-bind="attrs"
+                v-on="on"
+                >DELETE
+              </v-btn>
+            </template>
+            <v-card>
+              <v-card-title class="text-h5">
+                Are you sure you want to delete the user?
+              </v-card-title>
+              <v-card-text
+                >Deleted notices cannot be restored, and are immediately
+                reflected on the user portal after deletion.</v-card-text
+              >
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="dialogDelete = false">
+                  Cancel
+                </v-btn>
+                <v-btn color="blue darken-1" text @click="deleteUser">
+                  Confirm
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </div>
+      </v-col>
+    </v-row>
+
+    <div>
       <v-card-title>
         Admin Users
         <v-spacer></v-spacer>
@@ -123,6 +138,7 @@ export default {
   },
   data() {
     return {
+      readAll: false,
       dialogRegister: false,
       dialogModify: false,
       dialogDelete: false,
@@ -150,7 +166,7 @@ export default {
     };
   },
   created: function () {
-    this.getAllAdminUsers();
+    this.getAdminUsers();
   },
   methods: {
     hasSelectedRow: function () {
@@ -161,6 +177,9 @@ export default {
       this.dialogModify = false;
 
       window.location.reload();
+    },
+    changeReadStatus: function () {
+      this.getAdminUsers();
     },
     deleteUser: function () {
       this.dialogDelete = false;
@@ -181,9 +200,12 @@ export default {
           console.log("[ERR/DEL]" + error);
         });
     },
-    getAllAdminUsers: function () {
+    getAdminUsers: function () {
+      let path = "/api/admin-web/users/";
+      path += this.readAll ? "all" : "available";
+
       this.$axios
-        .get("/api/admin-web/users/all")
+        .get(path)
         .then((response) => {
           this.users = [];
 
