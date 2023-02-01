@@ -42,13 +42,37 @@
           </v-card>
         </v-dialog>
 
-        <v-btn
-          text
-          outlined
-          class="mx-md-1 elevation-2"
-          :disabled="!hasSelectedRow()"
-          >DELETE
-        </v-btn>
+        <v-dialog v-model="dialogDelete" persistent max-width="300">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              text
+              outlined
+              class="mx-md-1 elevation-2"
+              :disabled="!hasSelectedRow()"
+              v-bind="attrs"
+              v-on="on"
+              >DELETE
+            </v-btn>
+          </template>
+          <v-card>
+            <v-card-title class="text-h5">
+              Are you sure you want to delete the user?
+            </v-card-title>
+            <v-card-text
+              >Deleted notices cannot be restored, and are immediately reflected
+              on the user portal after deletion.</v-card-text
+            >
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="dialogDelete = false">
+                Cancel
+              </v-btn>
+              <v-btn color="blue darken-1" text @click="deleteUser">
+                Confirm
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </div>
 
       <v-card-title>
@@ -101,6 +125,7 @@ export default {
     return {
       dialogRegister: false,
       dialogModify: false,
+      dialogDelete: false,
       selectedRow: [],
       search: "",
       headers: [
@@ -160,6 +185,10 @@ export default {
     finishProcess: function () {
       this.dialogRegister = false;
       this.dialogModify = false;
+    },
+    deleteUser: function () {
+      this.dialogDelete = false;
+      console.log("delete user");
     },
   },
 };
