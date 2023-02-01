@@ -146,37 +146,11 @@ export default {
           value: "position",
         },
       ],
-      users: [
-        {
-          company: "여름 컴패니",
-          employeeNo: "100010",
-          nameKor: "홍길동",
-          position: "사원",
-
-          // Expanded contents
-          division: "RnD",
-          team: "Web Test",
-          email: "test-gildong@gmail.com",
-          phone: "010-1111-1111",
-          nameEng: "Gildong Hong",
-          usageExpDate: "9999-12-31",
-        },
-        {
-          company: "(주) 가을",
-          employeeNo: "200010",
-          nameKor: "김길동",
-          position: "팀장",
-
-          // Expanded contents
-          division: "RnD",
-          team: "개발 1팀",
-          email: "dev-gildong@gmail.com",
-          phone: "010-1111-2222",
-          nameEng: "Gildong Kim",
-          usageExpDate: "9999-12-31",
-        },
-      ],
+      users: [],
     };
+  },
+  created: function () {
+    this.getAllAdminUsers();
   },
   methods: {
     hasSelectedRow: function () {
@@ -185,10 +159,53 @@ export default {
     finishProcess: function () {
       this.dialogRegister = false;
       this.dialogModify = false;
+
+      window.location.reload();
     },
     deleteUser: function () {
       this.dialogDelete = false;
-      console.log("delete user");
+
+      this.$axios
+        .put("/api/admin-web/users/delete/" + this.selectedRow[0].employeeNo, {
+          employeeNo: this.selectedRow[0].employeeNo,
+          // TODO: EmployeeNo는 로그인한 유저의 사번으로 변경
+          updateEmployeeNo: "000000",
+          usageExpDate: new Date(
+            Date.now() - new Date().getTimezoneOffset() * 60000
+          )
+            .toISOString()
+            .substring(0, 10)
+            .replaceAll("-", ""),
+        })
+        .catch(function (error) {
+          console.log("[ERR/DEL]" + error);
+        });
+    },
+    getAllAdminUsers: function () {
+      this.$axios
+        .get("/api/admin-web/users/all")
+        .then((response) => {
+          this.users = [];
+
+          for (let idx in response.data) {
+            let user = {
+              company: response.data[idx].employeeCompany,
+              employeeNo: response.data[idx].employeeNo,
+              nameKor: response.data[idx].employeeName,
+              position: response.data[idx].employeePosition,
+              division: response.data[idx].employeeDivision,
+              team: response.data[idx].employeeTeam,
+              email: response.data[idx].employeeEmail,
+              phone: response.data[idx].employeePhone,
+              nameEng: response.data[idx].employeeNameEng,
+              usageExpDate: response.data[idx].usageExpDate,
+            };
+            this.users.push(user);
+          }
+        })
+        .catch(function (error) {
+          console.log("[ERR/REG]" + error);
+        });
     },
   },
 };
