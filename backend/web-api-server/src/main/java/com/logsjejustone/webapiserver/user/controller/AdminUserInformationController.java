@@ -41,7 +41,7 @@ public class AdminUserInformationController {
     }
 
     // UPDATE
-    @PutMapping("/{targetEmpNo}")
+    @PutMapping("/update/{targetEmpNo}")
     public ResponseEntity<AdminUserInformation> UpdateAdminUserInformation(@RequestBody AdminUserInformation adminUserInformation,
                                                                            @PathVariable String targetEmpNo) {
         System.out.println("[AdminUserInformation:UpdateAdminUserInformation]" + adminUserInformation + "\n Target:" + targetEmpNo);
@@ -50,7 +50,7 @@ public class AdminUserInformationController {
     }
 
     // DELETE
-    @DeleteMapping("/{targetEmpNo}")
+    @PutMapping("/delete/{targetEmpNo}")
     public ResponseEntity<AdminUserInformation> DeleteAdminUser(@RequestBody AdminUserInformation adminUserInformation,
                                                                 @PathVariable String targetEmpNo) {
         System.out.println("[AdminUserInformation:DeleteAdminUser]" + adminUserInformation + "\n Target:" + targetEmpNo);
