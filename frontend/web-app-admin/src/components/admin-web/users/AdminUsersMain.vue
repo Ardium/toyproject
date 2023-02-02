@@ -60,7 +60,7 @@
                 text
                 outlined
                 class="mx-md-1 elevation-2"
-                :disabled="!hasSelectedRow()"
+                :disabled="!checkDeleteStatus()"
                 v-bind="attrs"
                 v-on="on"
                 >DELETE
@@ -138,6 +138,10 @@ export default {
   },
   data() {
     return {
+      today: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+        .toISOString()
+        .substring(0, 10)
+        .replaceAll("-", ""),
       readAll: false,
       dialogRegister: false,
       dialogModify: false,
@@ -172,6 +176,14 @@ export default {
     hasSelectedRow: function () {
       return this.selectedRow.length > 0;
     },
+    checkDeleteStatus: function () {
+      let isAvailable = false;
+
+      if (this.hasSelectedRow() === true) {
+        isAvailable = this.selectedRow[0].usageExpDate > this.today;
+      }
+      return isAvailable;
+    },
     finishProcess: function () {
       this.dialogRegister = false;
       this.dialogModify = false;
@@ -189,12 +201,7 @@ export default {
           employeeNo: this.selectedRow[0].employeeNo,
           // TODO: EmployeeNo는 로그인한 유저의 사번으로 변경
           updateEmployeeNo: "000000",
-          usageExpDate: new Date(
-            Date.now() - new Date().getTimezoneOffset() * 60000
-          )
-            .toISOString()
-            .substring(0, 10)
-            .replaceAll("-", ""),
+          usageExpDate: this.today,
         })
         .catch(function (error) {
           console.log("[ERR/DEL]" + error);
