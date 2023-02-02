@@ -34,6 +34,10 @@ public class AdminUserInformationService {
             adminUserInformation.setRegisterDatetime(localDateTime);
             adminUserInformation.setUpdateDatetime(localDateTime);
 
+            // 사용자 신규 추가시 임시 비밀번호를 지정하므로, 비밀번호 변경 기한을 7일 뒤로 설정
+            String strPwExpDate = localDateTime.plusDays(7).toLocalDate().toString().replaceAll("-", "");
+            adminUserInformation.setEmployeePwExpDate(strPwExpDate);
+
             this.adminUserInformationRepository.save(adminUserInformation);
 
             responseEntity = new ResponseEntity<>(HttpStatus.OK);
