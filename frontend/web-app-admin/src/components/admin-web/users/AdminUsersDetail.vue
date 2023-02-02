@@ -15,6 +15,7 @@
             hide-selected
             required
             clearable
+            :disabled="isModifyMode()"
             :items="companies"
             :rules="[rules.required]"
             v-model="company"
@@ -28,6 +29,7 @@
             outlined
             dense
             clearable
+            :disabled="isModifyMode()"
             :rules="[rules.required, rules.employeeNo]"
             v-model="employeeNo"
             label="직원번호"
@@ -166,8 +168,11 @@
 </template>
 
 <script>
+const MODE_REGISTER = "REGISTER";
+const MODE_MODIFY = "MODIFY";
+
 export default {
-  props: ["employee"],
+  props: ["employee", "mode"],
   data() {
     return {
       rules: {
@@ -214,7 +219,9 @@ export default {
   },
   mounted: function () {
     this.$nextTick(function () {
-      this.setData();
+      if (this.mode === MODE_MODIFY) {
+        this.setData();
+      }
     });
   },
   watch: {
@@ -255,8 +262,67 @@ export default {
           break;
       }
     },
+    isModifyMode: function () {
+      return this.mode === MODE_MODIFY;
+    },
     clickOk: function () {
-      console.log("press ok button");
+      let path = "/api/admin-web/users";
+
+      switch (this.mode) {
+        case MODE_REGISTER:
+          console.log("REGISTER PROCESS");
+
+          this.$axios
+            .post(path, {
+              employeeNo: this.employeeNo,
+              registerEmployeeNo: "000000",
+              updateEmployeeNo: "000000",
+
+              employeeName: this.nameKor,
+              employeeNameEng: this.nameEng,
+              employeePhone: this.phone,
+              employeeEmail: this.email,
+              employeePw: this.password,
+              employeeCompany: this.company,
+              employeeDivision: this.division,
+              employeeTeam: this.team,
+              employeePosition: this.position,
+              usageExpDate: this.usageExpiryDate.replaceAll("-", ""),
+            })
+            .catch(function (error) {
+              console.log("[ERR/REG]" + error);
+            });
+          break;
+        case MODE_MODIFY:
+          console.log("MODIFY PROCESS");
+          path += "/update/";
+
+          this.$axios
+            .put(path + this.employeeNo, {
+              employeeNo: this.employeeNo,
+              updateEmployeeNo: "000000",
+
+              employee_name: this.nameKor,
+              employee_name_eng: this.nameEng,
+              employee_phone: this.phone,
+              employee_email: this.email,
+              employeePw: this.password,
+              employee_company: this.company,
+              employee_division: this.division,
+              employee_team: this.team,
+              employee_position: this.position,
+              usage_exp_date: this.usageExpiryDate,
+            })
+            .catch(function (error) {
+              console.log("[ERR/MOD]" + error);
+            });
+          break;
+        default:
+          // error
+          console.log("[ERR/clickOk] Mode:" + this.mode);
+          break;
+      }
+
       this.$emit("finishProcess");
     },
     clickCancel: function () {

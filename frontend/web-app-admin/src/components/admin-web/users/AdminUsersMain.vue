@@ -30,7 +30,10 @@
               </v-btn>
             </template>
             <v-card>
-              <Form v-on:finishProcess="finishProcess"></Form>
+              <Form
+                :mode="'REGISTER'"
+                v-on:finishProcess="finishProcess"
+              ></Form>
             </v-card>
           </v-dialog>
 
@@ -48,6 +51,7 @@
             </template>
             <v-card>
               <Form
+                :mode="'MODIFY'"
                 :employee="this.selectedRow[0]"
                 v-on:finishProcess="finishProcess"
               ></Form>
