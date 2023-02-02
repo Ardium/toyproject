@@ -90,15 +90,23 @@
           ></v-text-field>
         </v-col>
       </v-row>
-      <v-text-field
-        text
-        outlined
-        dense
-        clearable
-        :rules="[rules.required, rules.password]"
-        v-model="password"
-        label="비밀번호"
-      ></v-text-field>
+
+      <v-row>
+        <v-col>
+          <v-text-field
+            text
+            outlined
+            dense
+            clearable
+            :append-icon="showPw ? 'mdi-eye' : 'mdi-eye-off'"
+            :type="showPw ? 'text' : 'password'"
+            :rules="[rules.required, rules.password]"
+            v-model="password"
+            label="비밀번호"
+            @click:append="showPw = !showPw"
+          ></v-text-field>
+        </v-col>
+      </v-row>
 
       <v-row>
         <v-col>
@@ -202,6 +210,8 @@ export default {
         .toISOString()
         .substring(0, 10),
       companies: ["봄 회사", "여름 컴퍼니", "(주) 가을", "겨울 패밀리"],
+
+      showPw: false,
 
       // V-MODEL
       company: [],
