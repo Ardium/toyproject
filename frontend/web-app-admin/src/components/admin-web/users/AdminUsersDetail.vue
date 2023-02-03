@@ -247,6 +247,7 @@ export default {
       this.employeeNo = this.employee.employeeNo;
       this.nameKor = this.employee.nameKor;
       this.nameEng = this.employee.nameEng;
+      this.password = this.employee.password;
       this.phone = this.employee.phone;
       this.email = this.employee.email;
       this.division = this.employee.division;
@@ -312,16 +313,16 @@ export default {
               employeeNo: this.employeeNo,
               updateEmployeeNo: "000000",
 
-              employee_name: this.nameKor,
-              employee_name_eng: this.nameEng,
-              employee_phone: this.phone,
-              employee_email: this.email,
+              employeeName: this.nameKor,
+              employeeNameEng: this.nameEng,
+              employeePhone: this.phone,
+              employeeEmail: this.email,
               employeePw: this.password,
-              employee_company: this.company,
-              employee_division: this.division,
-              employee_team: this.team,
-              employee_position: this.position,
-              usage_exp_date: this.usageExpiryDate,
+              employeeCompany: this.company,
+              employeeDivision: this.division,
+              employeeTeam: this.team,
+              employeePosition: this.position,
+              usageExpDate: this.usageExpiryDate.replaceAll("-", ""),
             })
             .catch(function (error) {
               console.log("[ERR/MOD]" + error);

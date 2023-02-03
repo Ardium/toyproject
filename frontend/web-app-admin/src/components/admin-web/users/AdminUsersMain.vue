@@ -227,6 +227,7 @@ export default {
               nameKor: response.data[idx].employeeName,
               position: response.data[idx].employeePosition,
               division: response.data[idx].employeeDivision,
+              password: response.data[idx].employeePw,
               team: response.data[idx].employeeTeam,
               email: response.data[idx].employeeEmail,
               phone: response.data[idx].employeePhone,
