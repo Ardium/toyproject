@@ -18,7 +18,6 @@
 
         <!-- Menu/Navigation Bar list -->
         <v-list-item-group v-model="selectedItem" color="primary">
-          <!-- TODO: key 중복 문제 해결 필요 -->
           <v-list-item
             v-for="(item, i) in navBasicItems"
             :key="'common' + i"
