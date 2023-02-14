@@ -2,6 +2,8 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 
 Vue.use(VueRouter);
+// For Common
+import SettingsPage from "./../views/admin-web/BaseAdminSettings.vue";
 
 // For User Web
 import NoticePage from "./../views/user-web/notice/BaseNotice.vue";
@@ -10,6 +12,13 @@ import NoticePage from "./../views/user-web/notice/BaseNotice.vue";
 import AdminUsersPage from "./../views/admin-web/users/BaseAdminUsers.vue";
 
 const routes = [
+  // For Common
+  {
+    name: "BaseAdminSettings",
+    path: "/page/setting",
+    component: SettingsPage,
+  },
+
   // For User Web
   {
     name: "UserWebNoticeList",

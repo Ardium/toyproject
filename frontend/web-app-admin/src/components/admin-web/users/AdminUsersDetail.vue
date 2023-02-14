@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <div class="text-h5 font-weight-medium ma-2">
-      User Information (Admin Web)
+      {{ title }}
     </div>
 
     <v-divider class="mb-5"></v-divider>
@@ -15,7 +15,7 @@
             hide-selected
             required
             clearable
-            :disabled="isModifyMode()"
+            :disabled="isModifyMode() || isSettingMode()"
             :items="companies"
             :rules="[rules.required]"
             v-model="company"
@@ -29,7 +29,7 @@
             outlined
             dense
             clearable
-            :disabled="isModifyMode()"
+            :disabled="isModifyMode() || isSettingMode()"
             :rules="[rules.required, rules.employeeNo]"
             v-model="employeeNo"
             label="직원번호"
@@ -44,6 +44,7 @@
             outlined
             dense
             clearable
+            :disabled="isSettingMode()"
             :rules="[rules.required]"
             v-model="nameKor"
             label="국문이름"
@@ -56,6 +57,7 @@
             outlined
             dense
             clearable
+            :disabled="isSettingMode()"
             v-model="nameEng"
             label="영문이름"
             placeholder="Gildong Hong"
@@ -92,7 +94,7 @@
       </v-row>
 
       <v-row>
-        <v-col>
+        <v-col v-show="!isSettingMode()">
           <v-text-field
             text
             outlined
@@ -149,6 +151,7 @@
             outlined
             dense
             clearable
+            v-show="!isSettingMode()"
             type="date"
             :rules="[rules.required]"
             :min="minUsageExpiryDate"
@@ -178,9 +181,10 @@
 <script>
 const MODE_REGISTER = "REGISTER";
 const MODE_MODIFY = "MODIFY";
+const MODE_SETTING = "SETTING";
 
 export default {
-  props: ["employee", "mode"],
+  props: ["employee", "mode", "title"],
   data() {
     return {
       rules: {
@@ -275,6 +279,9 @@ export default {
     },
     isModifyMode: function () {
       return this.mode === MODE_MODIFY;
+    },
+    isSettingMode: function () {
+      return this.title.toUpperCase() === MODE_SETTING;
     },
     clickOk: function () {
       let path = "/api/admin-web/users";
