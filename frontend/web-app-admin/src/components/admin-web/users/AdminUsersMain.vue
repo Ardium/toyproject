@@ -31,8 +31,7 @@
             </template>
             <v-card>
               <Form
-                :mode="'REGISTER'"
-                :title="'User Information (Admin Web)'"
+                :mode="'Register'"
                 v-on:finishProcess="finishProcess"
               ></Form>
             </v-card>
@@ -52,8 +51,7 @@
             </template>
             <v-card>
               <Form
-                :mode="'MODIFY'"
-                :title="'User Information (Admin Web)'"
+                :mode="'Modify'"
                 :employee="this.selectedRow[0]"
                 v-on:finishProcess="finishProcess"
               ></Form>

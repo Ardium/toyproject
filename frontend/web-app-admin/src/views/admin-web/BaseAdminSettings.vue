@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <PrivateInformation :title="'Setting'"></PrivateInformation>
+    <PrivateInformation :mode="'Setting'"></PrivateInformation>
     <v-divider></v-divider>
 
     <UserPassword></UserPassword>

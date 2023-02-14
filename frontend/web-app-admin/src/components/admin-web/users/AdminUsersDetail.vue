@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <div class="text-h5 font-weight-medium ma-2">
-      {{ title }}
+      {{ mode }}
     </div>
 
     <v-divider class="mb-5"></v-divider>
@@ -184,7 +184,7 @@ const MODE_MODIFY = "MODIFY";
 const MODE_SETTING = "SETTING";
 
 export default {
-  props: ["employee", "mode", "title"],
+  props: ["employee", "mode"],
   data() {
     return {
       rules: {
@@ -278,10 +278,10 @@ export default {
       }
     },
     isModifyMode: function () {
-      return this.mode === MODE_MODIFY;
+      return this.mode.toUpperCase() === MODE_MODIFY;
     },
     isSettingMode: function () {
-      return this.title.toUpperCase() === MODE_SETTING;
+      return this.mode.toUpperCase() === MODE_SETTING;
     },
     clickOk: function () {
       let path = "/api/admin-web/users";
