@@ -23,29 +23,35 @@ public class AdminUserPasswordService {
     public ResponseEntity<AdminUserPassword> InsertAdminUserPw(Map<String, String> adminUserPw) {
         ResponseEntity<AdminUserPassword> responseEntity;
         String employeeNo = adminUserPw.get("employeeNo");
+        String currentPw = adminUserPw.get("currentPw");
 
         AdminUserPassword adminUserPwLatest = this.adminUserPasswordRepository.findFirstByEmployeeNoOrderByNoDesc(employeeNo);
         System.out.println("adminUserPwLatest:" + adminUserPwLatest);
 
-        if(adminUserPwLatest == null) {
-            System.out.println("[ERROR/InsertAdminUserPw] There is no data of employee(" + employeeNo + ")");
-            responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        String latestCurrentPw = (adminUserPwLatest == null) ? "" : adminUserPwLatest.getCurrentPw();
+        String latestPreviousPw1 = (adminUserPwLatest == null) ? "" : adminUserPwLatest.getPreviousPw1();
+        String latestPreviousPw2 = (adminUserPwLatest == null) ? "" : adminUserPwLatest.getPreviousPw2();
+        Integer latestNo = (adminUserPwLatest == null) ? 0 : adminUserPwLatest.getNo();
+
+        if(currentPw.equals(latestCurrentPw) || currentPw.equals(latestPreviousPw1) || currentPw.equals(latestPreviousPw2)) {
+            System.out.println("[ERROR/InsertAdminUserPw] 이전에 사용한 비밀번호로 교체할 수 없습니다.");
+            responseEntity = new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         else {
             AdminUserPassword adminUserPwNew = new AdminUserPassword();
 
             // Copy/Paste
             adminUserPwNew.setEmployeeNo(employeeNo);
-            adminUserPwNew.setPreviousPw2(adminUserPwLatest.getPreviousPw1());
-            adminUserPwNew.setPreviousPw1(adminUserPwLatest.getCurrentPw());
+            adminUserPwNew.setPreviousPw2(latestPreviousPw1);
+            adminUserPwNew.setPreviousPw1(latestCurrentPw);
 
             // New data
-            adminUserPwNew.setRegisterEmployeeNo(employeeNo);
+            adminUserPwNew.setRegisterEmployeeNo(adminUserPw.get("optEmployeeNo"));
             adminUserPwNew.setRegisterDatetime(localDateTime);
-            adminUserPwNew.setUpdateEmployeeNo(employeeNo);
+            adminUserPwNew.setUpdateEmployeeNo(adminUserPw.get("optEmployeeNo"));
             adminUserPwNew.setUpdateDatetime(localDateTime);
 
-            adminUserPwNew.setNo(adminUserPwLatest.getNo() + 1);
+            adminUserPwNew.setNo(latestNo + 1);
             adminUserPwNew.setCurrentPw(adminUserPw.get("currentPw"));
             adminUserPwNew.setPwTrialState(adminUserPw.get("pwTrialState"));
             adminUserPwNew.setTemporaryPwState(adminUserPw.get("temporaryPwState"));
