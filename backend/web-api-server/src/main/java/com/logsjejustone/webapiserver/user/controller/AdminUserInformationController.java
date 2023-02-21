@@ -1,7 +1,9 @@
 package com.logsjejustone.webapiserver.user.controller;
 
 import com.logsjejustone.webapiserver.user.domain.AdminUserInformation;
+import com.logsjejustone.webapiserver.user.domain.AdminUserPassword;
 import com.logsjejustone.webapiserver.user.service.AdminUserInformationService;
+import com.logsjejustone.webapiserver.user.service.AdminUserPasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,12 +12,16 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/admin-web/users")
+@RequestMapping("/api/admin-web/user")
 @CrossOrigin(origins = "http://localhost:8081")
 public class AdminUserInformationController {
 
     @Autowired
     private AdminUserInformationService adminUserInformationService;
+
+    @Autowired
+    private AdminUserPasswordService adminUserPasswordService;
+
 
     // CREATE
     @PostMapping("")
@@ -39,6 +45,13 @@ public class AdminUserInformationController {
         System.out.println("[AdminUserInformation:GetAvailableAdminUsers]");
 
         return this.adminUserInformationService.GetAvailableAdminUsers();
+    }
+
+    @GetMapping("/password")
+    public AdminUserPassword GetLatestPwHistory(@RequestBody Map<String, String> employee) {
+        System.out.println("[AdminUserPassword:GetLatestPwHistory] employee:" + employee);
+
+        return this.adminUserPasswordService.GetLatestPwHistory(employee.get("employeeNo"));
     }
 
     // UPDATE
