@@ -78,7 +78,16 @@ public class AdminUserInformationController {
     public ResponseEntity<AdminUserInformation> UpdateAdminUserPw(@RequestBody Map<String, String> employee) {
         System.out.println("[AdminUserInformation:UpdateAdminUserPw]" + employee);
 
-        return this.adminUserInformationService.UpdateAdminUserPw(employee);
+        ResponseEntity<AdminUserInformation> responseEntity;
+        HttpStatusCode statusCode = this.adminUserPasswordService.InsertAdminUserPw(employee).getStatusCode();
+        if(statusCode.is2xxSuccessful()) {
+            responseEntity = this.adminUserInformationService.UpdateAdminUserPw(employee);
+        }
+        else {
+            responseEntity = new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        }
+
+        return responseEntity;
     }
 
     // DELETE
