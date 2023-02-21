@@ -5,6 +5,8 @@ import com.logsjejustone.webapiserver.user.domain.AdminUserPassword;
 import com.logsjejustone.webapiserver.user.service.AdminUserInformationService;
 import com.logsjejustone.webapiserver.user.service.AdminUserPasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,10 +27,19 @@ public class AdminUserInformationController {
 
     // CREATE
     @PostMapping("")
-    public ResponseEntity<AdminUserInformation> AddAdminUser(@RequestBody AdminUserInformation adminUserInformation) {
-        System.out.println("[AdminUserInformation:AddAdminUser]" + adminUserInformation);
+    public ResponseEntity<AdminUserInformation> AddAdminUser(@RequestBody Map<String, String> employee) {
+        System.out.println("[AdminUserInformation:AddAdminUser]" + employee);
 
-        return this.adminUserInformationService.AddAdminUser(adminUserInformation);
+        ResponseEntity<AdminUserInformation> responseEntity;
+        HttpStatusCode statusCode = this.adminUserPasswordService.InsertAdminUserPw(employee).getStatusCode();
+        if(statusCode.is2xxSuccessful()) {
+            responseEntity = this.adminUserInformationService.AddAdminUser(employee);
+        }
+        else {
+            responseEntity = new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        }
+
+        return responseEntity;
     }
 
 

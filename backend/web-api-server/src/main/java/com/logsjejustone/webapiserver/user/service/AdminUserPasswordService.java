@@ -23,7 +23,7 @@ public class AdminUserPasswordService {
     public ResponseEntity<AdminUserPassword> InsertAdminUserPw(Map<String, String> adminUserPw) {
         ResponseEntity<AdminUserPassword> responseEntity;
         String employeeNo = adminUserPw.get("employeeNo");
-        String currentPw = adminUserPw.get("currentPw");
+        String currentPw = adminUserPw.get("employeePw");
 
         AdminUserPassword adminUserPwLatest = this.adminUserPasswordRepository.findFirstByEmployeeNoOrderByNoDesc(employeeNo);
         System.out.println("adminUserPwLatest:" + adminUserPwLatest);
@@ -33,6 +33,7 @@ public class AdminUserPasswordService {
         String latestPreviousPw2 = (adminUserPwLatest == null) ? "" : adminUserPwLatest.getPreviousPw2();
         Integer latestNo = (adminUserPwLatest == null) ? 0 : adminUserPwLatest.getNo();
 
+        System.out.println("latestCurrentPw: " + latestCurrentPw + " | latestPreviousPw1: " + latestPreviousPw1 + " | latestPreviousPw2: " + latestPreviousPw2 + " | latestNo: " + latestNo);
         if(currentPw.equals(latestCurrentPw) || currentPw.equals(latestPreviousPw1) || currentPw.equals(latestPreviousPw2)) {
             System.out.println("[ERROR/InsertAdminUserPw] 이전에 사용한 비밀번호로 교체할 수 없습니다.");
             responseEntity = new ResponseEntity<>(HttpStatus.CONFLICT);
@@ -46,13 +47,13 @@ public class AdminUserPasswordService {
             adminUserPwNew.setPreviousPw1(latestCurrentPw);
 
             // New data
-            adminUserPwNew.setRegisterEmployeeNo(adminUserPw.get("optEmployeeNo"));
+            adminUserPwNew.setRegisterEmployeeNo(adminUserPw.get("registerEmployeeNo"));
             adminUserPwNew.setRegisterDatetime(localDateTime);
-            adminUserPwNew.setUpdateEmployeeNo(adminUserPw.get("optEmployeeNo"));
+            adminUserPwNew.setUpdateEmployeeNo(adminUserPw.get("updateEmployeeNo"));
             adminUserPwNew.setUpdateDatetime(localDateTime);
 
             adminUserPwNew.setNo(latestNo + 1);
-            adminUserPwNew.setCurrentPw(adminUserPw.get("currentPw"));
+            adminUserPwNew.setCurrentPw(currentPw);
             adminUserPwNew.setPwTrialState(adminUserPw.get("pwTrialState"));
             adminUserPwNew.setTemporaryPwState(adminUserPw.get("temporaryPwState"));
 
@@ -60,6 +61,7 @@ public class AdminUserPasswordService {
             responseEntity = new ResponseEntity<>(HttpStatus.OK);
         }
 
+        System.out.println("responseEntity:" + responseEntity);
         return responseEntity;
     }
 

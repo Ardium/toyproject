@@ -22,18 +22,37 @@ public class AdminUserInformationService {
     private final LocalDateTime localDateTime = LocalDateTime.now();
 
     // CREATE
-    public ResponseEntity<AdminUserInformation> AddAdminUser(AdminUserInformation adminUserInformation) {
+    public ResponseEntity<AdminUserInformation> AddAdminUser(Map<String, String> employee) {
         ResponseEntity<AdminUserInformation> responseEntity;
-        Optional<AdminUserInformation> optAdminUserInfo = this.adminUserInformationRepository.findById(adminUserInformation.getEmployeeNo());
+
+        String employeeNo = employee.get("employeeNo");
+        Optional<AdminUserInformation> optAdminUserInfo = this.adminUserInformationRepository.findById(employeeNo);
 
         if(optAdminUserInfo.isPresent()) {
-            System.out.println("[ERROR/AddAdminUser] The employee No(" + adminUserInformation.getEmployeeNo() + ") already exists.");
+            System.out.println("[ERROR/AddAdminUser] The employee No(" + employeeNo + ") already exists.");
 
             responseEntity = new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         else {
+            AdminUserInformation adminUserInformation = new AdminUserInformation();
+
+            adminUserInformation.setEmployeeNo(employeeNo);
+
+            adminUserInformation.setRegisterEmployeeNo(employee.get("registerEmployeeNo"));
             adminUserInformation.setRegisterDatetime(localDateTime);
+            adminUserInformation.setUpdateEmployeeNo(employee.get("updateEmployeeNo"));
             adminUserInformation.setUpdateDatetime(localDateTime);
+
+            adminUserInformation.setEmployeeCompany(employee.get("employeeCompany"));
+            adminUserInformation.setEmployeeDivision(employee.get("employeeDivision"));
+            adminUserInformation.setEmployeeTeam(employee.get("employeeTeam"));
+            adminUserInformation.setEmployeePosition(employee.get("employeePosition"));
+            adminUserInformation.setEmployeePhone(employee.get("employeePhone"));
+            adminUserInformation.setEmployeeEmail(employee.get("employeeEmail"));
+            adminUserInformation.setEmployeePw(employee.get("employeePw"));
+            adminUserInformation.setEmployeeNameEng(employee.get("employeeNameEng"));
+            adminUserInformation.setEmployeeName(employee.get("employeeName"));
+            adminUserInformation.setUsageExpDate(employee.get("usageExpDate"));
 
             // 사용자 신규 추가시 임시 비밀번호를 지정하므로, 비밀번호 변경 기한을 7일 뒤로 설정
             String strPwExpDate = localDateTime.plusDays(7).toLocalDate().toString().replaceAll("-", "");
