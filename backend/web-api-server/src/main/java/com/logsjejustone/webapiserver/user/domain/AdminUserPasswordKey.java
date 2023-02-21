@@ -11,5 +11,5 @@ import java.io.Serializable;
 @Data
 public class AdminUserPasswordKey implements Serializable {
     private String employeeNo;
-    private String no;
+    private Integer no;
 }

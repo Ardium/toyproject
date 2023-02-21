@@ -23,7 +23,7 @@ public class AdminUserPassword {
 
     @Id
     @NotNull
-    private String no;
+    private Integer no;
 
     @NotNull
     @Column(length = 6)
