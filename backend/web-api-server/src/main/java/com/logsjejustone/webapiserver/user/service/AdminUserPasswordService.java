@@ -14,8 +14,6 @@ public class AdminUserPasswordService {
 
     // READ
     public AdminUserPassword GetLatestPwHistory(String employeeNo) {
-        AdminUserPassword adminUserPw = this.adminUserPasswordRepository.findFirstByEmployeeNoOrderByNoDesc(employeeNo);
-        System.out.println(employeeNo + " : " + adminUserPw);
-        return adminUserPw;
+        return this.adminUserPasswordRepository.findFirstByEmployeeNoOrderByNoDesc(employeeNo);
     }
 }
