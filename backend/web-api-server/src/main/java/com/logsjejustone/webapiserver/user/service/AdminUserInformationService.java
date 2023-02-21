@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -57,6 +58,33 @@ public class AdminUserInformationService {
     }
 
     // UPDATE
+    public ResponseEntity<AdminUserInformation> UpdateAdminUserPw(Map<String, String> employee) {
+        ResponseEntity<AdminUserInformation> responseEntity;
+        String employeeNo = employee.get("employeeNo");
+
+        Optional<AdminUserInformation> optAdminUserInfo = this.adminUserInformationRepository.findById(employeeNo);
+        if(optAdminUserInfo.isEmpty()) {
+            System.out.println("[ERROR/UpdateAdminUserPw] The employee No(" + employeeNo + ") does NOT exist.");
+
+            responseEntity = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        else {
+            AdminUserInformation afterAdminUserInfo = optAdminUserInfo.get();
+
+            afterAdminUserInfo.setUpdateDatetime(localDateTime);
+            afterAdminUserInfo.setUpdateEmployeeNo(employee.get("employeeNo"));
+
+            afterAdminUserInfo.setEmployeePw(employee.get("currentPw"));
+            afterAdminUserInfo.setEmployeePwExpDate(localDateTime.plusDays(60).format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+
+            responseEntity = new ResponseEntity<>(HttpStatus.OK);
+
+            this.adminUserInformationRepository.save(afterAdminUserInfo);
+        }
+
+        return responseEntity;
+    }
+
     public ResponseEntity<AdminUserInformation> UpdateAdminUserInformation(AdminUserInformation adminUserInformation,
                                                                            String targetEmpNo) {
         ResponseEntity<AdminUserInformation> responseEntity;
@@ -87,11 +115,7 @@ public class AdminUserInformationService {
             afterAdminUserInfo.setEmployeeEmail(adminUserInformation.getEmployeeEmail());
             afterAdminUserInfo.setEmployeePhone(adminUserInformation.getEmployeePhone());
 
-            String strCurPw = adminUserInformation.getEmployeePw();
-            if(! strCurPw.equals(afterAdminUserInfo.getEmployeePw())) {
-                afterAdminUserInfo.setEmployeePw(strCurPw);
-                afterAdminUserInfo.setEmployeePwExpDate(localDateTime.plusDays(60).format(DateTimeFormatter.ofPattern("yyyyMMdd")));
-            }
+//            비밀번호의 경우 별도의 함수(UpdateAdminUserPw)에서 처리함
 
             // - ROLE:6
             afterAdminUserInfo.setUsageExpDate(adminUserInformation.getUsageExpDate());

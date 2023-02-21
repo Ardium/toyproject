@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/admin-web/users")
@@ -47,6 +48,13 @@ public class AdminUserInformationController {
         System.out.println("[AdminUserInformation:UpdateAdminUserInformation]" + adminUserInformation + "\n Target:" + targetEmpNo);
 
         return this.adminUserInformationService.UpdateAdminUserInformation(adminUserInformation, targetEmpNo);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<AdminUserInformation> UpdateAdminUserPw(@RequestBody Map<String, String> employee) {
+        System.out.println("[AdminUserInformation:UpdateAdminUserPw]" + employee);
+
+        return this.adminUserInformationService.UpdateAdminUserPw(employee);
     }
 
     // DELETE
