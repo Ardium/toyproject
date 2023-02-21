@@ -91,9 +91,9 @@ public class AdminUserInformationService {
             AdminUserInformation afterAdminUserInfo = optAdminUserInfo.get();
 
             afterAdminUserInfo.setUpdateDatetime(localDateTime);
-            afterAdminUserInfo.setUpdateEmployeeNo(employee.get("employeeNo"));
+            afterAdminUserInfo.setUpdateEmployeeNo(employee.get("updateEmployeeNo"));
 
-            afterAdminUserInfo.setEmployeePw(employee.get("currentPw"));
+            afterAdminUserInfo.setEmployeePw(employee.get("employeePw"));
             afterAdminUserInfo.setEmployeePwExpDate(localDateTime.plusDays(60).format(DateTimeFormatter.ofPattern("yyyyMMdd")));
 
             responseEntity = new ResponseEntity<>(HttpStatus.OK);
