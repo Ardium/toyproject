@@ -201,7 +201,7 @@ export default {
       this.dialogDelete = false;
 
       this.$axios
-        .put("/api/admin-web/users/delete/" + this.selectedRow[0].employeeNo, {
+        .put("/api/admin-web/user/delete/" + this.selectedRow[0].employeeNo, {
           employeeNo: this.selectedRow[0].employeeNo,
           // TODO: EmployeeNo는 로그인한 유저의 사번으로 변경
           updateEmployeeNo: "000000",
@@ -212,7 +212,7 @@ export default {
         });
     },
     getAdminUsers: function () {
-      let path = "/api/admin-web/users/";
+      let path = "/api/admin-web/user/";
       path += this.readAll ? "all" : "available";
 
       this.$axios

@@ -284,7 +284,7 @@ export default {
       return this.mode.toUpperCase() === MODE_SETTING;
     },
     clickOk: function () {
-      let path = "/api/admin-web/users";
+      let path = "/api/admin-web/user";
 
       switch (this.mode) {
         case MODE_REGISTER:
