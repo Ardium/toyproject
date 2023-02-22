@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <v-container>
     <div class="text-h5 font-weight-medium ma-3">Password</div>
 
     <div class="ma-md-2">
@@ -59,12 +59,12 @@
         >OK
       </v-btn>
     </div>
-  </div>
+  </v-container>
 </template>
 
 <script>
 export default {
-  props: ["password"],
+  props: ["employee"],
   data() {
     return {
       rules: {
@@ -84,17 +84,27 @@ export default {
   },
   methods: {
     clickCancel: function () {
-      // TODO: SOMETHINGS
+      this.passwordCur = "";
+      this.passwordTobe1 = "";
+      this.passwordTobe2 = "";
     },
     clickOk: function () {
-      if (this.password === this.passwordCur) {
-        if (this.passwordTobe1 === this.passwordTobe2) {
-          // TODO: 변경 Axios 연동
-        } else {
-          this.alert("변경할 비밀번호가 서로 일치하지 않습니다.");
-        }
+      let path = "/api/admin-web/user/update";
+      let jsonData = {
+        employeeNo: this.employee.employeeNo,
+        employeePw: this.passwordTobe1,
+        registerEmployeeNo: "000000",
+        updateEmployeeNo: "000000",
+        pwTrialState: "0",
+        temporaryPwState: "N",
+      };
+
+      if (this.passwordTobe1 === this.passwordTobe2) {
+        this.$axios.put(path, jsonData).catch(function (error) {
+          console.log("[ERR/UserPwChange]" + error);
+        });
       } else {
-        this.alert("입력한 현재 비밀번호가 일치하지 않습니다.");
+        this.alert("변경할 비밀번호가 서로 일치하지 않습니다.");
       }
     },
   },
