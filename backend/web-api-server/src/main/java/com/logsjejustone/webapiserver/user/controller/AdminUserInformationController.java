@@ -58,6 +58,13 @@ public class AdminUserInformationController {
         return this.adminUserInformationService.GetAvailableAdminUsers();
     }
 
+    @GetMapping("/{employeeNo}")
+    public AdminUserInformation GetSpecificAdminUser(@PathVariable String employeeNo) {
+        System.out.println("[AdminUserInformation:GetSpecificAdminUser]" + employeeNo);
+
+        return this.adminUserInformationService.GetSpecificAdminUser(employeeNo);
+    }
+
     @GetMapping("/password")
     public AdminUserPassword GetLatestPwHistory(@RequestBody Map<String, String> employee) {
         System.out.println("[AdminUserPassword:GetLatestPwHistory] employee:" + employee);

@@ -76,6 +76,20 @@ public class AdminUserInformationService {
         return this.adminUserInformationRepository.findByUsageExpDateGreaterThanEqual(usageExpDate);
     }
 
+    public AdminUserInformation GetSpecificAdminUser(String employeeNo) {
+        AdminUserInformation adminUserInformation;
+        Optional<AdminUserInformation> optAdminUserInfo = this.adminUserInformationRepository.findById(employeeNo);
+        if(optAdminUserInfo.isEmpty()) {
+            System.out.println("[INFO/UpdateAdminUserPw] The employee No(" + employeeNo + ") does NOT exist.");
+            adminUserInformation = null;
+        }
+        else {
+            adminUserInformation = optAdminUserInfo.get();
+        }
+
+        return adminUserInformation;
+    }
+
     // UPDATE
     public ResponseEntity<AdminUserInformation> UpdateAdminUserPw(Map<String, String> employee) {
         ResponseEntity<AdminUserInformation> responseEntity;
