@@ -155,7 +155,7 @@ export default {
       headers: [
         {
           text: "Company",
-          value: "company",
+          value: "employeeCompany",
         },
         {
           text: "Employee No.",
@@ -163,11 +163,11 @@ export default {
         },
         {
           text: "Name (Kor)",
-          value: "nameKor",
+          value: "employeeName",
         },
         {
           text: "Position",
-          value: "position",
+          value: "employeePosition",
         },
       ],
       users: [],
@@ -222,16 +222,16 @@ export default {
 
           for (let idx in response.data) {
             let user = {
-              company: response.data[idx].employeeCompany,
+              employeeCompany: response.data[idx].employeeCompany,
               employeeNo: response.data[idx].employeeNo,
-              nameKor: response.data[idx].employeeName,
-              position: response.data[idx].employeePosition,
-              division: response.data[idx].employeeDivision,
-              password: response.data[idx].employeePw,
-              team: response.data[idx].employeeTeam,
-              email: response.data[idx].employeeEmail,
-              phone: response.data[idx].employeePhone,
-              nameEng: response.data[idx].employeeNameEng,
+              employeeName: response.data[idx].employeeName,
+              employeePosition: response.data[idx].employeePosition,
+              employeeDivision: response.data[idx].employeeDivision,
+              employeePw: response.data[idx].employeePw,
+              employeeTeam: response.data[idx].employeeTeam,
+              employeeEmail: response.data[idx].employeeEmail,
+              employeePhone: response.data[idx].employeePhone,
+              employeeNameEng: response.data[idx].employeeNameEng,
               usageExpDate: response.data[idx].usageExpDate,
             };
             this.users.push(user);

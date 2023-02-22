@@ -18,7 +18,7 @@
             :disabled="isModifyMode() || isSettingMode()"
             :items="companies"
             :rules="[rules.required]"
-            v-model="company"
+            v-model="employeeCompany"
             label="회사"
             @change="changeCompany"
           ></v-combobox>
@@ -46,7 +46,7 @@
             clearable
             :disabled="isSettingMode()"
             :rules="[rules.required]"
-            v-model="nameKor"
+            v-model="employeeName"
             label="국문이름"
             placeholder="홍길동"
           ></v-text-field>
@@ -58,7 +58,7 @@
             dense
             clearable
             :disabled="isSettingMode()"
-            v-model="nameEng"
+            v-model="employeeNameEng"
             label="영문이름"
             placeholder="Gildong Hong"
           ></v-text-field>
@@ -73,7 +73,7 @@
             dense
             clearable
             :rules="[rules.required, rules.phone]"
-            v-model="phone"
+            v-model="employeePhone"
             label="휴대폰 번호"
             placeholder="010-####-####"
           ></v-text-field>
@@ -86,7 +86,7 @@
             clearable
             type="email"
             :rules="[rules.required, rules.email]"
-            v-model="email"
+            v-model="employeeEmail"
             label="이메일 주소"
             placeholder="gildong-hong@gmail.com"
           ></v-text-field>
@@ -103,7 +103,7 @@
             :append-icon="showPw ? 'mdi-eye' : 'mdi-eye-off'"
             :type="showPw ? 'text' : 'password'"
             :rules="[rules.required, rules.password]"
-            v-model="password"
+            v-model="employeePw"
             label="비밀번호"
             @click:append="showPw = !showPw"
           ></v-text-field>
@@ -117,7 +117,7 @@
             outlined
             dense
             clearable
-            v-model="division"
+            v-model="employeeDivision"
             label="부서"
           ></v-text-field>
         </v-col>
@@ -127,7 +127,7 @@
             outlined
             dense
             clearable
-            v-model="team"
+            v-model="employeeTeam"
             label="팀"
           ></v-text-field>
         </v-col>
@@ -141,7 +141,7 @@
             dense
             clearable
             :rules="[rules.required]"
-            v-model="position"
+            v-model="employeePosition"
             label="직책"
           ></v-text-field>
         </v-col>
@@ -218,23 +218,29 @@ export default {
       showPw: false,
 
       // V-MODEL
-      company: [],
+      employeeCompany: [],
       employeeNo: "",
-      nameKor: "",
-      nameEng: "",
-      phone: "",
-      email: "",
-      password: "",
-      division: "",
-      team: "",
-      position: "",
+      employeeName: "",
+      employeeNameEng: "",
+      employeePhone: "",
+      employeeEmail: "",
+      employeePw: "",
+      employeeDivision: "",
+      employeeTeam: "",
+      employeePosition: "",
       usageExpiryDate: "9999-12-31",
     };
   },
   mounted: function () {
     this.$nextTick(function () {
-      if (this.mode === MODE_MODIFY) {
-        this.setData();
+      console.log(this.mode.toUpperCase());
+      switch (this.mode.toUpperCase()) {
+        case MODE_MODIFY:
+        case MODE_SETTING:
+          this.setData();
+          break;
+        default:
+          break;
       }
     });
   },
@@ -247,19 +253,19 @@ export default {
   },
   methods: {
     setData: function () {
-      this.company = this.employee.company;
+      this.employeeCompany = this.employee.employeeCompany;
       this.employeeNo = this.employee.employeeNo;
-      this.nameKor = this.employee.nameKor;
-      this.nameEng = this.employee.nameEng;
-      this.password = this.employee.password;
-      this.phone = this.employee.phone;
-      this.email = this.employee.email;
-      this.division = this.employee.division;
-      this.team = this.employee.team;
-      this.position = this.employee.position;
+      this.employeeName = this.employee.employeeName;
+      this.employeeNameEng = this.employee.employeeNameEng;
+      this.employeePw = this.employee.employeePw;
+      this.employeePhone = this.employee.employeePhone;
+      this.employeeEmail = this.employee.employeeEmail;
+      this.employeeDivision = this.employee.employeeDivision;
+      this.employeeTeam = this.employee.employeeTeam;
+      this.employeePosition = this.employee.employeePosition;
     },
     changeCompany: function () {
-      switch (this.company) {
+      switch (this.employeeCompany) {
         case "봄 회사": // 100000 ~ 199999
           this.employeeNo = "1";
           break;
@@ -291,15 +297,15 @@ export default {
         registerEmployeeNo: "000000",
         updateEmployeeNo: "000000",
 
-        employeeName: this.nameKor,
-        employeeNameEng: this.nameEng,
-        employeePhone: this.phone,
-        employeeEmail: this.email,
-        employeePw: this.password,
-        employeeCompany: this.company,
-        employeeDivision: this.division,
-        employeeTeam: this.team,
-        employeePosition: this.position,
+        employeeName: this.employeeName,
+        employeeNameEng: this.employeeNameEng,
+        employeePhone: this.employeePhone,
+        employeeEmail: this.employeeEmail,
+        employeePw: this.employeePw,
+        employeeCompany: this.employeeCompany,
+        employeeDivision: this.employeeDivision,
+        employeeTeam: this.employeeTeam,
+        employeePosition: this.employeePosition,
         usageExpDate: this.usageExpiryDate.replaceAll("-", ""),
         pwTrialState: "0",
         temporaryPwState: "N",
@@ -314,7 +320,8 @@ export default {
           });
           break;
         case MODE_MODIFY:
-          console.log("MODIFY PROCESS");
+        case MODE_SETTING:
+          console.log(this.mode.toUpperCase() + " PROCESS");
           path += "/update/";
 
           this.$axios
