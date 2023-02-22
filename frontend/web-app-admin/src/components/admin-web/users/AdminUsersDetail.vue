@@ -286,51 +286,39 @@ export default {
     clickOk: function () {
       let path = "/api/admin-web/user";
 
-      switch (this.mode) {
+      let jsonData = {
+        employeeNo: this.employeeNo,
+        registerEmployeeNo: "000000",
+        updateEmployeeNo: "000000",
+
+        employeeName: this.nameKor,
+        employeeNameEng: this.nameEng,
+        employeePhone: this.phone,
+        employeeEmail: this.email,
+        employeePw: this.password,
+        employeeCompany: this.company,
+        employeeDivision: this.division,
+        employeeTeam: this.team,
+        employeePosition: this.position,
+        usageExpDate: this.usageExpiryDate.replaceAll("-", ""),
+        pwTrialState: "0",
+        temporaryPwState: "N",
+      };
+
+      switch (this.mode.toUpperCase()) {
         case MODE_REGISTER:
           console.log("REGISTER PROCESS");
 
-          this.$axios
-            .post(path, {
-              employeeNo: this.employeeNo,
-              registerEmployeeNo: "000000",
-              updateEmployeeNo: "000000",
-
-              employeeName: this.nameKor,
-              employeeNameEng: this.nameEng,
-              employeePhone: this.phone,
-              employeeEmail: this.email,
-              employeePw: this.password,
-              employeeCompany: this.company,
-              employeeDivision: this.division,
-              employeeTeam: this.team,
-              employeePosition: this.position,
-              usageExpDate: this.usageExpiryDate.replaceAll("-", ""),
-            })
-            .catch(function (error) {
-              console.log("[ERR/REG]" + error);
-            });
+          this.$axios.post(path, jsonData).catch(function (error) {
+            console.log("[ERR/REG]" + error);
+          });
           break;
         case MODE_MODIFY:
           console.log("MODIFY PROCESS");
           path += "/update/";
 
           this.$axios
-            .put(path + this.employeeNo, {
-              employeeNo: this.employeeNo,
-              updateEmployeeNo: "000000",
-
-              employeeName: this.nameKor,
-              employeeNameEng: this.nameEng,
-              employeePhone: this.phone,
-              employeeEmail: this.email,
-              employeePw: this.password,
-              employeeCompany: this.company,
-              employeeDivision: this.division,
-              employeeTeam: this.team,
-              employeePosition: this.position,
-              usageExpDate: this.usageExpiryDate.replaceAll("-", ""),
-            })
+            .put(path + this.employeeNo, jsonData)
             .catch(function (error) {
               console.log("[ERR/MOD]" + error);
             });
