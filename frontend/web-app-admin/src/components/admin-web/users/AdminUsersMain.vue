@@ -76,14 +76,50 @@
               </v-card-title>
               <v-card-text
                 >Deleted user cannot be restored, and are immediately reflected
-                on the admin portal after deletion.</v-card-text
-              >
+                on the admin portal after deletion.
+              </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="dialogDelete = false">
                   Cancel
                 </v-btn>
                 <v-btn color="blue darken-1" text @click="deleteUser">
+                  Confirm
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+
+          <v-dialog v-model="dialogCreatePassword" persistent max-width="450">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                text
+                outlined
+                class="mx-md-1 elevation-2"
+                :disabled="!hasSelectedRow()"
+                v-bind="attrs"
+                v-on="on"
+                >CREATE PASSWORD
+              </v-btn>
+            </template>
+            <v-card>
+              <v-card-title class="text-h5">
+                Are you sure you want to create temporary password for the user?
+              </v-card-title>
+              <v-card-text
+                >Previous password cannot be restored, and are immediately
+                reflected on the admin portal after creation temporary password.
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn
+                  color="blue darken-1"
+                  text
+                  @click="dialogCreatePassword = false"
+                >
+                  Cancel
+                </v-btn>
+                <v-btn color="blue darken-1" text @click="createPassword">
                   Confirm
                 </v-btn>
               </v-card-actions>
@@ -150,6 +186,7 @@ export default {
       dialogRegister: false,
       dialogModify: false,
       dialogDelete: false,
+      dialogCreatePassword: false,
       selectedRow: [],
       search: "",
       headers: [
@@ -211,6 +248,42 @@ export default {
           console.log("[ERR/DEL]" + error);
         });
     },
+    createPassword: function () {
+      this.dialogCreatePassword = false;
+
+      // Generate random string
+      let temporaryPassword = Math.random().toString(36).substring(2, 11);
+      console.log(temporaryPassword);
+
+      let path = "/api/admin-web/user/update";
+      let jsonData = {
+        employeeNo: this.selectedRow[0].employeeNo,
+        employeePw: temporaryPassword,
+        registerEmployeeNo: "000000",
+        updateEmployeeNo: "000000",
+        pwTrialState: "0",
+        temporaryPwState: "Y",
+      };
+
+      this.$axios
+        .put(path, jsonData)
+        .then((response) => {
+          if (response.statusText == "OK") {
+            alert(
+              "Have to notice this temporary password(" +
+                temporaryPassword +
+                ") to the user(" +
+                this.selectedRow[0].employeeNo +
+                "/" +
+                this.selectedRow[0].employeeName +
+                ")."
+            );
+          }
+        })
+        .catch(function (error) {
+          console.log("[ERR/CREATEPASSWORD]" + error);
+        });
+    },
     getAdminUsers: function () {
       let path = "/api/admin-web/user/";
       path += this.readAll ? "all" : "available";
@@ -238,7 +311,7 @@ export default {
           }
         })
         .catch(function (error) {
-          console.log("[ERR/REG]" + error);
+          console.log("[ERR/GET]" + error);
         });
     },
   },
