@@ -3,7 +3,7 @@
     <div id="idTitle">
       <h1>Admin Portal</h1>
     </div>
-    <v-spacer> </v-spacer>
+
     <div>
       <v-text-field
         text
@@ -46,7 +46,12 @@ export default {
 
 <style scoped>
 .container {
-  width: 50%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  justify-content: center;
+  width: 40%;
+  height: 100%;
 }
 
 #idTitle {
