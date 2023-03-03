@@ -8,22 +8,14 @@ This project consists of **ONLY** front-end source code.
 ## Project Environment
 
 - VSCode
+- Node.js
+- Vue-cli
 - Git
 
 ## Project Setup
 
-It assumes you have VSCode installed.
-
-```
-vue create web-app-admin
-- select Vue 2 (recommended)
-
-vue add vuetify
-- select Vue 2 (recommended)
-
-vue add router
-vue add axios
-```
+1. [VSCode로 뷰(Vue.js) 개발 환경 구축하기](https://logs-jejustone.tistory.com/53)
+2. [VSCode로 뷰(Vue.js) 프로젝트 생성 및 구동하기](https://logs-jejustone.tistory.com/5)
 
 ## Project Run
 
