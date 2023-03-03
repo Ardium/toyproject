@@ -108,7 +108,8 @@ public class AdminUserInformationService {
             afterAdminUserInfo.setUpdateEmployeeNo(employee.get("updateEmployeeNo"));
 
             afterAdminUserInfo.setEmployeePw(employee.get("employeePw"));
-            afterAdminUserInfo.setEmployeePwExpDate(localDateTime.plusDays(60).format(DateTimeFormatter.ofPattern("yyyyMMdd")));
+            int pwExpDate = employee.get("temporaryPwState").equals("Y") ? 7 : 60;
+            afterAdminUserInfo.setEmployeePwExpDate(localDateTime.plusDays(pwExpDate).format(DateTimeFormatter.ofPattern("yyyyMMdd")));
 
             responseEntity = new ResponseEntity<>(HttpStatus.OK);
 
