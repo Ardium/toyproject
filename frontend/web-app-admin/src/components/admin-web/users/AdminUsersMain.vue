@@ -75,8 +75,8 @@
                 Are you sure you want to delete the user?
               </v-card-title>
               <v-card-text
-                >Deleted notices cannot be restored, and are immediately
-                reflected on the user portal after deletion.</v-card-text
+                >Deleted user cannot be restored, and are immediately reflected
+                on the admin portal after deletion.</v-card-text
               >
               <v-card-actions>
                 <v-spacer></v-spacer>
