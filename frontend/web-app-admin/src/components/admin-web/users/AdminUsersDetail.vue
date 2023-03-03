@@ -94,7 +94,7 @@
       </v-row>
 
       <v-row>
-        <v-col v-show="!isSettingMode()">
+        <v-col v-show="!isSettingMode() && !isModifyMode()">
           <v-text-field
             text
             outlined
