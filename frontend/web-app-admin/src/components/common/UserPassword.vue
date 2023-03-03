@@ -100,9 +100,19 @@ export default {
       };
 
       if (this.passwordTobe1 === this.passwordTobe2) {
-        this.$axios.put(path, jsonData).catch(function (error) {
-          console.log("[ERR/UserPwChange]" + error);
-        });
+        this.$axios
+          .put(path, jsonData)
+          .then((response) => {
+            if (response.statusText == "OK") {
+              alert("비밀번호를 변경하였습니다.");
+            }
+          })
+          .catch(function (error) {
+            console.log("[ERR/UserPwChange]" + error);
+            if (error.response.status == "417") {
+              alert("이전에 사용한 비밀번호로 변경할 수 없습니다.");
+            }
+          });
       } else {
         this.alert("변경할 비밀번호가 서로 일치하지 않습니다.");
       }
